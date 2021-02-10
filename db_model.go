@@ -8,8 +8,17 @@ type Connector struct {
 	RawConnection *gorm.DB
 }
 
-func NewConnector(driveName string) *Connector {
-	return &Connector{RawConnection: connectionList[driveName]()}
+type ConnectionConfig struct {
+	User     string
+	Password string
+	Host     string
+	Port     int
+	DB       string
+	SSL      bool
+}
+
+func NewConnectorWithDB(db *gorm.DB) *Connector {
+	return &Connector{RawConnection: db}
 }
 
 func (c *Connector) FetchOne(dest interface{}, tx *gorm.DB, with ...string) error {

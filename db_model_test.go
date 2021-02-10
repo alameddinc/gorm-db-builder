@@ -1,10 +1,9 @@
 package gormDBPlus
 
 import (
+	"github.com/alameddinc/gorm-db-builder/postgres"
 	"testing"
 )
-
-const TestDrive = POSTGRES_DRIVE
 
 type Student struct {
 	ID    uint `gorm:"primaryKey"`
@@ -46,7 +45,7 @@ var TestStudents = []Student{
 }
 
 func TestConnector_Save(t *testing.T) {
-	c := NewConnector(TestDrive)
+	c := NewConnectorWithDB(postgres.Connection())
 	err := c.RawConnection.AutoMigrate(&Student{})
 	err = c.RawConnection.AutoMigrate(&Book{})
 	if err != nil {
@@ -71,7 +70,7 @@ func TestConnector_Save(t *testing.T) {
 }
 
 func TestConnector_FetchOne(t *testing.T) {
-	c := NewConnector(TestDrive)
+	c := NewConnectorWithDB(postgres.Connection())
 	findStudent := Student{ID: TestStudents[2].ID}
 	err := c.FetchOne(&findStudent, nil)
 	if err != nil {
@@ -96,7 +95,7 @@ func TestConnector_FetchOne(t *testing.T) {
 }
 
 func TestConnector_AppendChild(t *testing.T) {
-	c := NewConnector(TestDrive)
+	c := NewConnectorWithDB(postgres.Connection())
 	appendName := "Adana"
 	appendBooks := []Book{
 		{Name: "Adana2"},
@@ -124,7 +123,7 @@ func TestConnector_AppendChild(t *testing.T) {
 }
 
 func TestConnector_CountChild(t *testing.T) {
-	c := NewConnector(TestDrive)
+	c := NewConnectorWithDB(postgres.Connection())
 	findStudent := Student{ID: TestStudents[4].ID}
 	count := c.CountChild(&findStudent, "Books", nil)
 	if count != 5 {
@@ -134,7 +133,7 @@ func TestConnector_CountChild(t *testing.T) {
 }
 
 func TestConnector_ReplaceChild(t *testing.T) {
-	c := NewConnector(TestDrive)
+	c := NewConnectorWithDB(postgres.Connection())
 	books := []Book{
 		{Name: "Bursa1"},
 		{Name: "Bursa2"},
@@ -156,7 +155,7 @@ func TestConnector_ReplaceChild(t *testing.T) {
 }
 
 func TestConnector_ClearChild(t *testing.T) {
-	c := NewConnector(TestDrive)
+	c := NewConnectorWithDB(postgres.Connection())
 	findStudent := Student{ID: TestStudents[4].ID}
 	c.ClearChild(&findStudent, "Books", nil)
 	findStudent2 := Student{ID: TestStudents[4].ID}
@@ -167,7 +166,7 @@ func TestConnector_ClearChild(t *testing.T) {
 	}
 }
 func TestConnector_Update(t *testing.T) {
-	c := NewConnector(TestDrive)
+	c := NewConnectorWithDB(postgres.Connection())
 	UpdatedName := "Test123"
 	findStudent := Student{ID: TestStudents[1].ID}
 	err := c.Update(&findStudent, &Student{Name: UpdatedName}, nil)
@@ -188,7 +187,7 @@ func TestConnector_Update(t *testing.T) {
 }
 
 func TestConnector_FetchAll(t *testing.T) {
-	c := NewConnector(TestDrive)
+	c := NewConnectorWithDB(postgres.Connection())
 	findStudent := Student{Name: "444"}
 	students := []Student{}
 	c.FetchAll(&students, &findStudent, nil)
@@ -205,7 +204,7 @@ func TestConnector_FetchAll(t *testing.T) {
 }
 
 func TestConnector_FetchOneWithID(t *testing.T) {
-	c := NewConnector(TestDrive)
+	c := NewConnectorWithDB(postgres.Connection())
 	findStudent := Student{}
 	c.FetchOneWithID(&findStudent, int(TestStudents[2].ID), nil)
 	if findStudent.Name != TestStudents[2].Name {
@@ -215,7 +214,7 @@ func TestConnector_FetchOneWithID(t *testing.T) {
 }
 
 func TestConnector_Remove(t *testing.T) {
-	c := NewConnector(TestDrive)
+	c := NewConnectorWithDB(postgres.Connection())
 	findStudent := Student{ID: TestStudents[2].ID}
 	err := c.Remove(&findStudent, nil)
 	if err != nil {
