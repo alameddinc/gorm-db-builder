@@ -6,7 +6,7 @@ Detaylı Kullanım örneklerini aşağıdaki makaleden inceleyebilirsiniz.
 https://alameddinc.medium.com/gorm-db-için-arayüz-geliştirmek-4df6fd641840
 
 
-## Mevcut Fonksiyonlar
+## Örnek Kullanımlar (V1)
 
 **FetchOne** 
 ```
