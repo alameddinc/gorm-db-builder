@@ -8,6 +8,26 @@ https://alameddinc.medium.com/gorm-db-için-arayüz-geliştirmek-4df6fd641840
 
 ## Örnek Kullanımlar (V1)
 
+**Connection İçin Örnek Fonksiyon** 
+```
+import (
+	. "github.com/alameddinc/gorm-db-builder"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
+)
+
+func Connection() *Connector{
+	dsn := "host=127.0.0.1 user=username password=password DB.name=database port=5432 sslmode=disable"
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	if err != nil {
+		panic(err)
+	}
+	return &Connector{RawConnection: db}
+}
+```
+
+**Kütüphane Fonksiyonının Örnek Kullanımları** 
+
 **FetchOne** 
 ```
 func (p *Class) FetchOne(with ...string) error {  
