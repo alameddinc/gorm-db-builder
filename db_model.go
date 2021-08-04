@@ -90,11 +90,11 @@ func (c *Connector) Remove(p interface{}, tx *gorm.DB) error {
 	return query.Model(p).Delete(p).Error
 }
 
-func (c *Connector) IsExist(p interface{}, tx *gorm.DB) (bool,error) {
+func (c *Connector) IsExist(p interface{}, tx *gorm.DB) (bool, error) {
 	query := getQuery(c, tx)
 	var count int64
 	if err := query.Model(p).Count(&count); err != nil {
-		return false, error()
+		return false, err
 	}
 	return count != 0, nil
 }
